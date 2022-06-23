@@ -1,4 +1,4 @@
-#Welcome to the better co-wordle bot, written in rust
+#Welcome to the better co-ordle bot, written in rust
 
 The cargo.toml contains the dependancies
 in order to get your project up and running. type:
