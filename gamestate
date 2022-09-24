@@ -1,0 +1,40 @@
+class Game:
+    MAX_GUESSES = 10
+    def __init__(self):
+        self.answer = answer
+        self.guesses = [None] * Game.MAX_GUESSES
+        self.finished = False
+        self.current_guess = 0
+    
+        
+    def make_guess(self, guess):
+        self.guesses[self.current_guess] = guess
+        self.current_guess += 1
+        if self.current_guess >= self.MAX_GUESSES:
+            #do stuff
+            self.finished = True
+
+    def validate_word(self, word):
+        #is this word in the dictionary
+        pass
+
+    def guess_points(self, word):
+        #get number of points gained by this guess
+        pass
+
+    def generate_embed(self):
+
+
+class GameHelper 
+
+
+class Guess:
+    def __init__(self, word, user, timestamp):
+        self.word = word
+        self.user = user
+        self.timestamp = timestamp
+        self.points = 0
+
+class Word:
+    def __init__(self, ):
+        
