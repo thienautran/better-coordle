@@ -1,3 +1,4 @@
-#Welcome to better coordle#
+#Welcome to better coordle
 
-uses python discord.py dependancy
+This bot is built off of discord.py
+version: 2.0.0.1

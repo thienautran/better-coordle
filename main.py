@@ -1,39 +1,44 @@
-import discord
-from discord.ext import commands
-import random
-
-from dotenv import load_dotenv
 import os
+import discord
+import ui.embeds as embeds
+import ui.buttons as buttons
+import ui.modals as modals
+from dotenv import load_dotenv
+from discord.ext import commands
 
 # load the variables and token
 load_dotenv()
 token = os.getenv("TOKEN")
 
-# This example requires the 'members' and 'message_content' privileged intents to function.
+
+class Client(commands.Bot):
+    def __init__(self):
+        intents = discord.Intents.default()
+        intents.message_content = True
+        super().__init__(command_prefix=commands.when_mentioned_or("!"), intents=intents)
+
+    async def on_ready(self):
+        print(f'Logged in as {self.user} (ID: {self.user.id})')
+        print('------')
+
+client = Client()
 
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
+@client.command()
+async def ping(ctx):
+    await ctx.send("pong")
 
-There are a number of utility commands being showcased here.'''
+@client.command()
+async def guess(ctx):
+    view = buttons.GuessButton()
+    await ctx.send(view=view)
 
-intents = discord.Intents.default()
-#intents.members = True
-intents.message_content = True
+@client.command()
+async def board(ctx):
+    e = embeds.GameBoard(6)
+    e = e.create_embed()
+    v = buttons.GuessButton()
+    await ctx.send(embed=e, view=v)
 
-
-client = discord.Client(intents=intents)
-
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('!'):
-        await message.channel.send(message.content[1:])
 
 client.run(token)
