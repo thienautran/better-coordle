@@ -1,10 +1,15 @@
 import discord
 
-class WordGuess(discord.ui.Modal, title="Word guess"):
-    word = discord.ui.TextInput(label="Enter the word", placeholder="Enter a word: ")
+class WordGuess(discord.ui.Modal):
+    def __init__(self, game_controller, title="Guess a word"):
+        self.game_controller = game_controller
 
+        super().__init__(title=title)
+        self.word = self.add_item(discord.ui.TextInput(label="Enter the word", placeholder="Enter a word: "))
+    
     async def on_submit(self, interaction):
-        await interaction.response.send_message(f"Your word was `{self.word.value}` uwu")
+        word = self.word.children[0].value # first child is first element in the list which is the word
+        await self.game_controller.update_gamestate(interaction, word)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        await interaction.response.send_message('Oops! Something went wrong.', ephemeral=True)
+        await interaction.response.send_message(f"Error: {error}")

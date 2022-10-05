@@ -1,5 +1,6 @@
 import os
 import discord
+from gamecontroller import GameController
 import ui.embeds as embeds
 import ui.buttons as buttons
 import ui.modals as modals
@@ -29,16 +30,8 @@ async def ping(ctx):
     await ctx.send("pong")
 
 @client.command()
-async def guess(ctx):
-    view = buttons.GuessButton()
-    await ctx.send(view=view)
-
-@client.command()
-async def board(ctx):
-    e = embeds.GameBoard(6)
-    e = e.create_embed()
-    v = buttons.GuessButton()
-    await ctx.send(embed=e, view=v)
-
+async def start_game(ctx, guess_length, max_guesses):
+    game = GameController(int(guess_length), int(max_guesses))
+    await ctx.send(embed=game.ui_embed.embed, view=game.ui_button)
 
 client.run(token)
