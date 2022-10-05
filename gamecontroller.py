@@ -23,7 +23,11 @@ class GameController:
         # await interaction.response.send_message(f"Word is: {guess}")
         
         # update the backend gamestate
-        self.game.make_guess(guess)
+        try:
+            self.game.make_guess(guess)
+        except ValueError:
+            await interaction.response.send_message("The game is over, try again in the next round")
+            return
 
         # edit the ui embed in memory 
         self.ui_embed.update_embed(self.game.board)

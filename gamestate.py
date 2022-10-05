@@ -11,8 +11,8 @@ class Game:
 
     def make_guess(self, guess):
         if self.current_guess + 1 > self.max_guesses:
-            return
-        
+         raise ValueError("Game is over")
+
         self.board[self.current_guess] = guess
         self.current_guess += 1
 
