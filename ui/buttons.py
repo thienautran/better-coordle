@@ -8,4 +8,4 @@ class GuessButton(discord.ui.View):
 
     @discord.ui.button(label='Make guess', style=discord.ButtonStyle.green)
     async def make_guess(self, interaction, button):
-        await self.game_controller.send_ui_modal(interaction)
+        await self.game_controller.ui_handler(interaction, button=True)

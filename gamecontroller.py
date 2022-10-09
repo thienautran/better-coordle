@@ -36,3 +36,14 @@ class GameController:
         
         await interaction.message.edit(embed=self.return_embed())
         await interaction.response.send_message(f"You have placed a guess!\nYour guessed word was: {guess}")
+    
+    async def ui_handler(self, interaction, button=False, embed=False, modal=False, data=None):
+        if button:
+            # do button things
+            await self.send_ui_modal(interaction)
+        elif modal:
+            # do modal things
+            await self.update_gamestate(interaction, data)
+        elif embed:
+            # do embed things
+            pass
