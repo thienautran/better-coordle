@@ -9,7 +9,10 @@ class WordGuess(discord.ui.Modal):
     
     async def on_submit(self, interaction):
         word = self.word.children[0].value # first child is first element in the list which is the word
-        await self.game_controller.ui_handler(interaction, modal=True, data=word)
+        user = interaction.user.name
+        timestamp = f"{interaction.created_at}"
+        print(f"Interaction at {timestamp}")
+        await self.game_controller.ui_handler(interaction, modal=True, data=[word, user, timestamp])
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(f"Error: {error}")

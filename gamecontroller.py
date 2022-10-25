@@ -19,9 +19,10 @@ class GameController:
     async def send_ui_modal(self, interaction):
         await interaction.response.send_modal(self.ui_modal)
 
-    async def update_gamestate(self, interaction, guess):
+    async def update_gamestate(self, interaction, data):
         # await interaction.response.send_message(f"Word is: {guess}")
-        
+        guess = data[0]
+
         # update the backend gamestate
         try:
             self.game.make_guess(guess)
@@ -35,7 +36,7 @@ class GameController:
         # edit the message and update the ui
         
         await interaction.message.edit(embed=self.return_embed())
-        await interaction.response.send_message(f"You have placed a guess!\nYour guessed word was: {guess}")
+        await interaction.response.send_message(f"{data[1]} has placed a guess!\nThe guessed word was: {guess}\nInteraction created at {data[2]}")
     
     async def ui_handler(self, interaction, button=False, embed=False, modal=False, data=None):
         if button:
