@@ -9,12 +9,15 @@ class WordGuess(discord.ui.Modal):
     
     async def on_submit(self, interaction):
         word = self.text_input.children[0].value # first child is first element in the list which is the word
-        user = interaction.user.name
-        timestamp = interaction.created_at
-        print(f"Interaction at {timestamp}")
-        input_data = {"word": word, "user": user, "timestamp": timestamp}
-
-        await self.game_controller.ui_handler(interaction, modal=True, data=input_data)
+        if word.isalpha():
+            user = interaction.user.name
+            timestamp = interaction.created_at
+            print(f"Interaction at {timestamp}")
+            input_data = {"word": word, "user": user, "timestamp": timestamp}
+            await self.game_controller.ui_handler(interaction, modal=True, data=input_data)
+        else:
+            invalid_input_msg = f"{word} is an invalid guess\nGuesses can only contain letters"
+            await interaction.response.send_message(invalid_input_msg, ephemeral=True)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(f"Error: {error}")
