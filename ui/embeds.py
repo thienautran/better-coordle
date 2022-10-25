@@ -5,8 +5,8 @@ class GameBoard:
         self.game_controller = game_controller
         
         # save the board dimentions from game
-        self.board_x = self.game_controller.game.guess_length
-        self.board_y = self.game_controller.game.max_guesses
+        self.board_x = self.game_controller.guess_length
+        self.board_y = self.game_controller.max_guesses
         
         # create the embed
         self.embed = discord.Embed(title="Better Coordle")
@@ -20,5 +20,5 @@ class GameBoard:
 
     def update_embed(self, board):
         self.embed.remove_field(0)
-        new_ui_board = "\n".join([guess if guess != None else "⬜" * self.board_x for guess in board])
+        new_ui_board = "\n".join([f"{guess.word}↔️{guess.user} at {guess.timestamp}" if guess != None else "⬜" * self.board_x for guess in board])
         self.embed.add_field(name="Guesses", value=new_ui_board)

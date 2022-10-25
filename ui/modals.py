@@ -5,14 +5,16 @@ class WordGuess(discord.ui.Modal):
         self.game_controller = game_controller
 
         super().__init__(title=title)
-        self.word = self.add_item(discord.ui.TextInput(label="Enter the word", placeholder="Enter a word: "))
+        self.text_input = self.add_item(discord.ui.TextInput(label="Enter a word", placeholder=f"Enter a {self.game_controller.guess_length} letter word: ", max_length=self.game_controller.guess_length, min_length=self.game_controller.guess_length))
     
     async def on_submit(self, interaction):
-        word = self.word.children[0].value # first child is first element in the list which is the word
+        word = self.text_input.children[0].value # first child is first element in the list which is the word
         user = interaction.user.name
-        timestamp = f"{interaction.created_at}"
+        timestamp = interaction.created_at
         print(f"Interaction at {timestamp}")
-        await self.game_controller.ui_handler(interaction, modal=True, data=[word, user, timestamp])
+        input_data = {"word": word, "user": user, "timestamp": timestamp}
+
+        await self.game_controller.ui_handler(interaction, modal=True, data=input_data)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message(f"Error: {error}")

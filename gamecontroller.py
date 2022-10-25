@@ -6,6 +6,8 @@ from ui.modals import WordGuess
 
 class GameController:
     def __init__(self, guess_length, max_guesses):
+        self.guess_length = guess_length
+        self.max_guesses = max_guesses
         self.game = Game(guess_length, max_guesses)
         
         # UI components
@@ -20,24 +22,21 @@ class GameController:
         await interaction.response.send_modal(self.ui_modal)
 
     async def update_gamestate(self, interaction, data):
-        # await interaction.response.send_message(f"Word is: {guess}")
-        guess = data[0]
-
         # update the backend gamestate
         try:
-            self.game.make_guess(guess)
+            self.game.add_guess(data)
         except ValueError:
             await interaction.response.send_message("The game is over, try again in the next round")
             return
 
+        # no errors were raised so continue
+
         # edit the ui embed in memory 
         self.ui_embed.update_embed(self.game.board)
 
-        # edit the message and update the ui
-        
-        await interaction.message.edit(embed=self.return_embed())
-        await interaction.response.send_message(f"{data[1]} has placed a guess!\nThe guessed word was: {guess}\nInteraction created at {data[2]}")
-    
+        # send the payload game data to ui
+        await interaction.response.edit_message(embed=self.return_embed())
+
     async def ui_handler(self, interaction, button=False, embed=False, modal=False, data=None):
         if button:
             # do button things
@@ -45,6 +44,4 @@ class GameController:
         elif modal:
             # do modal things
             await self.update_gamestate(interaction, data)
-        elif embed:
-            # do embed things
-            pass
+        return

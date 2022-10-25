@@ -9,14 +9,16 @@ class Game:
         self.finished = False
         self.current_guess = 0
 
-    def make_guess(self, guess):
+    def add_guess(self, data):
         if self.current_guess + 1 > self.max_guesses:
-         raise ValueError("Game is over")
+            raise ValueError("Game is over")
 
+        # create a guess object with data payload
+        guess = Guess(data["word"], data["user"], data["timestamp"])
+
+        # populate the board
         self.board[self.current_guess] = guess
-        self.current_guess += 1
-
-
+        self.current_guess += 1 # move pointer
 
 
 class Guess:
