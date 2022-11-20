@@ -29,7 +29,7 @@ client = Client()
 async def ping(ctx):
     await ctx.send("pong")
 
-@client.command()
+@client.command(aliases = ["start"])
 async def start_game(ctx, guess_length, max_guesses):
     game = GameController(int(guess_length), int(max_guesses))
     await ctx.send(embed=game.ui_embed.embed, view=game.ui_button)

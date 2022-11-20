@@ -9,9 +9,18 @@ class Game:
         self.finished = False
         self.current_guess = 0
 
-    def add_guess(self, data):
+    def __validate_guess(self, guess):
         if self.current_guess + 1 > self.max_guesses:
-            raise ValueError("Game is over")
+            return False
+        if not guess.isalpha():
+            return False
+        
+        return True # when valid
+
+    def add_guess(self, data):     
+        if not self.__validate_guess(data["word"]):
+            raise ValueError("Invalid guess")
+
 
         # create a guess object with data payload
         guess = Guess(data["word"], data["user"], data["timestamp"])
